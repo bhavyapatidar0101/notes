@@ -36,8 +36,40 @@ function Dashboard(){
     const [udescription,setuDescription] = useState();
     const [utotal_copies,setuTotal_copies] = useState();
 
+    //details
+    const [did,setdId] = useState(-1);
+    const [dtitle,setdTitle] = useState();
+    const [dauthor,setdAuthor] = useState();
+    const [disbn,setdIsbn] = useState();
+    const [dgenre,setdGenre] = useState();
+    const [dpublication_year,setdPublication_year] = useState();
+    const [dpublisher,setdPublisher] = useState();
+    const [ddescription,setdDescription] = useState();
+    const [dtotal_copies,setdTotal_copies] = useState();
+    const [detailid,setdetailid] = useState();
 
-
+    //details
+    let handleDetails = () => {
+        BookService.get(detailid).then((r)=>{
+            console.log(r);
+            if(r.data.id!=0){
+                setdId(r.data.id);
+                setdTitle(r.data.title);
+                setdAuthor(r.data.author);
+                setdIsbn(r.data.isbn);
+                setdGenre(r.data.dgenre);
+                setdPublication_year(r.data.publication_year);
+                setdPublisher(r.data.publisher);
+                setdDescription(r.data.description);
+                setdTotal_copies(r.data.total_copies);
+            }
+            else{
+                console.log("empty");
+            }
+        }).catch((e)=>{
+            console.log(e);
+        });
+    }
 
     let handleGet = () => {
         BookService.getAll().then((r)=>{
@@ -216,7 +248,49 @@ function Dashboard(){
             </AppBar>
         
 
+        <div className='mt-5 py-5 mx-5'>
+            <div className='d-flex flex-row justify-content-start align-items-center'>            
+            <TextField type='number' variant='standard' label="id" onChange={(e)=>{setdetailid(e.target.value)}} />
+            <Button onClick={()=>{handleDetails()}}>Get</Button>
+            </div>
 
+           
+        <table className='table'>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Description</th>
+                        <th>Isbn</th>
+                        <th>Genre</th>
+                        <th>Publisher</th>
+                        <th>Year</th>
+                        <th>Copies</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {(did == detailid ? 
+                    <tr>
+                        <td>{did}</td>
+                        <td>{dtitle}</td>
+                        <td>{dauthor}</td>
+                        <td>{ddescription}</td>
+                        <td>{disbn}</td>
+                        <td>{dgenre}</td>
+                        <td>{dpublisher}</td>
+                        <td>{dpublication_year}</td>
+                        <td>{dtotal_copies}</td>
+                    </tr>
+
+: <div></div>  )}
+                </tbody>
+
+                </table>
+                
+        
+        </div>
        
 
         <div className='px-5 py-5'>
@@ -266,16 +340,7 @@ function Dashboard(){
 
 
                             </tr>
-                            
-
-
-
-
-
-
-
-
-
+  
 
 
                             :
