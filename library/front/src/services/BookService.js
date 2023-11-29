@@ -1,7 +1,8 @@
-const URL = "http://localhost:8080/api/book"
+import axios from 'axios';
+const URL = "http://localhost:8080/api/books";
 const HEADERS = {
     'headers':{'Content-Type' : 'application/json'}
-};
+}
 class BookService{
 
     getAll(){
