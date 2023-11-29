@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.library.back.dto.BookAddRequestDTO;
+import com.library.back.dto.BookAddResponseDTO;
+import com.library.back.dto.BookDeleteResponseDTO;
+import com.library.back.dto.BookUpdateRequestDTO;
+import com.library.back.dto.BookUpdateResponseDTO;
 import com.library.back.models.Book;
 import com.library.back.repositories.BookRepository;
+import com.library.back.services.BookService;
 
 
 @CrossOrigin
@@ -22,108 +28,56 @@ import com.library.back.repositories.BookRepository;
 public class BookController {
 	
 	@Autowired
-	private BookRepository book_table;
+	private BookService book_service;
 	
 	
 	
 	// GET /api/book - retrieve all books
 	@GetMapping
 	public List<Book> getAll(){
-		return book_table.findAll();
+		return book_service.getAll();
 	}
 	
 	// POST /api/books - Create a new book
 	@PostMapping
-	public boolean add(@RequestBody Book incoming_data) {
+	public BookAddResponseDTO add(@RequestBody BookAddRequestDTO incoming_data) {
 		try {
-			if(incoming_data.getAuthor().length() == 0 && incoming_data.getAuthor() != null) {
-				throw new Exception("Empty Author name");
-			}
-			if(incoming_data.getDescription().length() == 0 && incoming_data.getDescription() != null) {
-				throw new Exception("Description is Empty");
-			}
-			if(incoming_data.getGenre().length() == 0 && incoming_data.getGenre() != null) {
-				throw new Exception("Empty genre");
-			}
-			if(incoming_data.getIsbn().length() == 0 && incoming_data.getIsbn() != null) {
-				throw new Exception("Empty ISBN");
-			}
-			if(incoming_data.getPublisher().length() == 0 && incoming_data.getPublisher() != null) {
-				throw new Exception("Empty Publisher");
-			}
-			if(incoming_data.getTitle().length() == 0 && incoming_data.getTitle() != null) {
-				throw new Exception("Empty Title");
-			}
-			if(incoming_data.getTotal_copies() == 0) {
-				throw new Exception("0 total copies");
-			}
 			
-			book_table.save(incoming_data);
-			return true;
+			
+			boolean status = book_service.add(incoming_data);
+			return new BookAddResponseDTO(status,"Book added");
 		}
 		catch(Exception e) {
 			System.out.println(e);
-			return false;
+			return new BookAddResponseDTO(false,"Book not added");
 		}
 	}
 	
 	
 	//PUT /api/books - Update book details
 	@PutMapping
-	public boolean update(@RequestBody Book incoming_data) {
+	public BookUpdateResponseDTO update(@RequestBody BookUpdateRequestDTO incoming_data) {
 		try {
-			if(incoming_data.getId() == 0) {
-				throw new Exception("Id not specified");
-			}
-			if(incoming_data.getAuthor().length() == 0 && incoming_data.getAuthor() != null) {
-				throw new Exception("Empty Author name");
-			}
-			if(incoming_data.getDescription().length() == 0 && incoming_data.getDescription() != null) {
-				throw new Exception("Description is Empty");
-			}
-			if(incoming_data.getGenre().length() == 0 && incoming_data.getGenre() != null) {
-				throw new Exception("Empty genre");
-			}
-			if(incoming_data.getIsbn().length() == 0 && incoming_data.getIsbn() != null) {
-				throw new Exception("Empty ISBN");
-			}
-			if(incoming_data.getPublisher().length() == 0 && incoming_data.getPublisher() != null) {
-				throw new Exception("Empty Publisher");
-			}
-			if(incoming_data.getTitle().length() == 0 && incoming_data.getTitle() != null) {
-				throw new Exception("Empty Title");
-			}
-			if(incoming_data.getTotal_copies() == 0) {
-				throw new Exception("0 total copies");
-			}
-			Book row = book_table.findById(incoming_data.getId()).get();
-			row.setAuthor(incoming_data.getAuthor());
-			row.setDescription(incoming_data.getDescription());
-			row.setGenre(incoming_data.getGenre());
-			row.setIsbn(incoming_data.getIsbn());
-			row.setPublication_year(incoming_data.getPublication_year());
-			row.setPublisher(incoming_data.getPublisher());
-			row.setTitle(incoming_data.getTitle());
-			row.setTotal_copies(incoming_data.getTotal_copies());
-			book_table.save(row);
-			return true;
+			
+			book_service.update(incoming_data);
+			return new BookUpdateResponseDTO(true,"Book updated");
 		}
 		catch(Exception e) {
 			System.out.println(e);
-			return false;
+			return new BookUpdateResponseDTO(false,"Book not updated");
 		}
 	}
 	
 	//DELETE /api/books/:id - delete book details
 	@DeleteMapping("/{id}")
-	public boolean delete(@PathVariable("id") int id) {
+	public BookDeleteResponseDTO delete(@PathVariable("id") int id) {
 		try {
-			book_table.deleteById(id);
-			return true;
+			book_service.delete(id);
+			return new BookDeleteResponseDTO(true,"Book deleted");
 		}
 		catch(Exception e) {
 			System.out.println(e);
-			return false;
+			return new BookDeleteResponseDTO(false,"Book not deleted");
 		}
 	}
 	
@@ -133,7 +87,7 @@ public class BookController {
 	@GetMapping("/{id}")
 	public Book details(@PathVariable("id") int id) {
 		try {
-			return book_table.findById(id).get();
+			return book_service.get(id);
 		}
 		catch(Exception e) {
 			System.out.println(e);

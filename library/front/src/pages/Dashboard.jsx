@@ -142,7 +142,7 @@ function Dashboard(){
         }
         BookService.add(data).then((r)=>{
             console.log(r.data);
-            if(r.data == true){
+            if(r.data.status == true){
                 alert("Book Added");
                 window.location.reload();
             }
@@ -202,7 +202,7 @@ function Dashboard(){
         }
         BookService.update(data).then((r)=>{
             console.log(r.data);
-            if(r.data == true){
+            if(r.data.status == true){
                 alert("Book Updated");
                 window.location.reload();
             }
@@ -218,7 +218,7 @@ function Dashboard(){
     let handleDelete = (id) => {
         BookService.delete(id).then((r)=>{
             console.log(r.data);
-            if(r.data == true){
+            if(r.data.status == true){
                 alert("Book Deleted");
                 window.location.reload();
             }
