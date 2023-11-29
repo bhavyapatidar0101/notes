@@ -10,7 +10,7 @@ function Dashboard(){
 
     //error
     const[error,setError] = useState();
-
+    const[error2,setError2] = useState();
 
     //Read
     const [books,setBooks] = useState([]);
@@ -124,6 +124,39 @@ function Dashboard(){
 
 
     let handleUpdate = () => {
+        if (utitle.length == 0 ){
+            setError2("Title cannot be empty");
+            return;
+        }
+        if (uauthor.length == 0 ){
+            setError2("Author cannot be empty");
+            return;
+        }
+        if (udescription.length == 0 ){
+            setError2("Description cannot be empty");
+            return;
+        }
+        if (uisbn.length == 0){
+            setError2("ISBN cannot be empty");
+            return;
+        }
+        if (ugenre.length == 0){
+            setError2("Genre cannot be empty");
+            return;
+        }
+        if (upublication_year ==  null|| upublication_year == undefined){
+            setError2("Publication Year cannot be empty");
+            return;
+        }
+        if (upublisher.length == 0){
+            setError2("Publisher cannot be empty");
+            return;
+        }
+        if (utotal_copies == 0){
+            setError2("Total copies cannot be zero");
+            return;
+        }
+        setError2("");
         let data = {
             'id':uid,
             'title':utitle,
@@ -184,24 +217,11 @@ function Dashboard(){
         
 
 
-        <div className="add-form px-5 pt-5" style={{marginTop:'20vh'}}>
-            <span className='display-5'>Add Book</span>
-            <div className=' d-flex flex-row align-items-center justify-content-between my-5'>
-            <TextField type='text' size='small' variant='standard' placeholder="Title" required={true} onChange={(e)=>setTitle(e.target.value)}/>
-            <TextField type='text' size='small' variant='standard' placeholder="Author" required={true} onChange={(e)=>setAuthor(e.target.value)}/>
-            <TextField type='text' size='small' variant='standard' placeholder="Description" required={true} onChange={(e)=>setDescription(e.target.value)}/>
-            <TextField type='text' size='small' variant='standard' placeholder="Isbn" required={true} onChange={(e)=>setIsbn(e.target.value)}/>
-            <TextField type='text' size='small' variant='standard' placeholder="Genre" required={true} onChange={(e)=>setGenre(e.target.value)}/>
-            <TextField type='text' size='small' variant='standard' placeholder="Publisher" required={true} onChange={(e)=>setPublisher(e.target.value)}/>
-            <TextField type='date' size='small' variant='standard' placeholder="Publication Year" required={true} onChange={(e)=>setPublication_year(e.target.value)}/>
-            <TextField type='number' size='small' variant='standard' placeholder="Total Copies" required={true} onChange={(e)=>setTotal_copies(e.target.value)}/>
-            <Button variant='contained' onClick={()=>{handleAdd()}}>Add</Button>
-            </div>
-            <div className='text-danger'>{error}</div>
-        </div>
+       
 
         <div className='px-5 py-5'>
             <div className='display-5 my-5'>Details</div>
+            <div className='text-danger mb-5'>{error2}</div>
             <table className='table'>
                 <thead>
                     <tr>
@@ -285,6 +305,23 @@ function Dashboard(){
 
         </div>
 
+
+
+        <div className="add-form px-5 pt-5" style={{marginTop:'20vh'}}>
+            <span className='display-5'>Add Book</span>
+            <div className=' d-flex flex-row align-items-center justify-content-between mt-5'>
+            <TextField type='text' size='small' variant='standard' placeholder="Title" required={true} onChange={(e)=>setTitle(e.target.value)}/>
+            <TextField type='text' size='small' variant='standard' placeholder="Author" required={true} onChange={(e)=>setAuthor(e.target.value)}/>
+            <TextField type='text' size='small' variant='standard' placeholder="Description" required={true} onChange={(e)=>setDescription(e.target.value)}/>
+            <TextField type='text' size='small' variant='standard' placeholder="Isbn" required={true} onChange={(e)=>setIsbn(e.target.value)}/>
+            <TextField type='text' size='small' variant='standard' placeholder="Genre" required={true} onChange={(e)=>setGenre(e.target.value)}/>
+            <TextField type='text' size='small' variant='standard' placeholder="Publisher" required={true} onChange={(e)=>setPublisher(e.target.value)}/>
+            <TextField type='date' size='small' variant='standard' placeholder="Publication Year" required={true} onChange={(e)=>setPublication_year(e.target.value)}/>
+            <TextField type='number' size='small' variant='standard' placeholder="Total Copies" required={true} onChange={(e)=>setTotal_copies(e.target.value)}/>
+            <Button variant='standard' onClick={()=>{handleAdd()}}>Add</Button>
+            </div>
+            <div className='text-danger mb-5'>{error}</div>
+        </div>
 
 
 
